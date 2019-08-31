@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
   },
   links: [
     {
-      link: mongoose.Schema.Types.ObjectId
+      name: {type: String},
+      url: {type: String, required: true},
     }
   ],
   password: String,
@@ -26,12 +27,9 @@ userSchema.methods.generateHash = password  => {
  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
 }
  
-
-
 userSchema.methods.checkPasswordSuccess = (reqPassword, dbPassword) => {
   return bcrypt.compareSync(reqPassword, dbPassword)
 }
-  
 
 const User = mongoose.model('User', userSchema)
 module.exports = User

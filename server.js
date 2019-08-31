@@ -9,10 +9,7 @@ app.use(cors())
 app.use(express.json())
 const port = 5000
 
-const linksRouter = require('./routers/links')
 const usersRouter = require('./routers/users')
-
-app.use('/links', linksRouter)
 app.use('/users', usersRouter)
 
 const url = process.env.ATLAS_URL

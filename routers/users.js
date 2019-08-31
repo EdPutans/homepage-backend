@@ -11,7 +11,7 @@ router.route('/register').post((req, res)=>{
       .then(r=> !console.log('good') && res.json('User saved'))
       .catch(err=> res.status(401).json('error' + err))
   }
-    return res.status(500).json('Error creating user - ' + err)
+    return res.status(500).json('Error creating user')
 })
 
 router.route('/login').post((req, res)=>{
@@ -26,7 +26,36 @@ router.route('/login').post((req, res)=>{
     }
    return res.status(400).json({error: 'User not found'})
   })
-  .catch(err => console.log(err))
+  .catch(e => console.log(e))
 })
+
+router.route('/:id/addLink').post((req, res) => {
+  User.findById(req.params.id)
+    .then(user => {
+      const {url, name} = req.body
+      user.links.push({url, name})
+      user.save()
+      return res.status(200).json(user)
+    })
+    .catch(err => res.status(500).json(err))
+})
+router.route('/removeLink/:id/:linkId').post((req,res) => {
+  User.findById(req.params.id)
+    .then(user => {
+      user.links  = [...user.links].filter(l => l.id !== req.params.linkId)
+      user.save()
+      return res.json(user)
+    })
+    .catch(err  => res.status(400).json(err))
+})
+
+
+router.route('/:id').get((req, res)=>{
+  User.findById(req.params.id)
+    .then(User => res.json(User))
+    .catch(err => res.status(400).json('Error ' + err))
+})
+
+
 
 module.exports = router
