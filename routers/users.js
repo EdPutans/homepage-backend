@@ -42,20 +42,11 @@ router.route('/:id/addLink').post((req, res) => {
 router.route('/removeLink/:id/:linkId').post((req,res) => {
   User.findById(req.params.id)
     .then(user => {
-      user.links  = [...user.links].filter(l => l.id !== req.params.linkId)
+      user.links  = user.links.filter(l => l.id !== req.params.linkId)
       user.save()
       return res.json(user)
     })
     .catch(err  => res.status(400).json(err))
 })
-
-
-router.route('/:id').get((req, res)=>{
-  User.findById(req.params.id)
-    .then(User => res.json(User))
-    .catch(err => res.status(400).json('Error ' + err))
-})
-
-
 
 module.exports = router
