@@ -6,7 +6,6 @@ router.route('/register').post((req, res)=>{
   const newUser = new User({username})
   if(password.length >= 8){
     newUser.password = newUser.generateHash(password)
-    console.log(password, newUser.generateHash(password))
     return newUser.save()
       .then(r=> !console.log('good') && res.json('User saved'))
       .catch(err=> res.status(401).json('error' + err))
